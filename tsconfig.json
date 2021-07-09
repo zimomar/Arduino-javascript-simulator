@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "strict": false,
+    "allowJs": true,
+    "rootDir": "src",
+
+    "newLine": "LF",
+    "outDir": "./lib/",
+
+    "jsx": "preserve",
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["src/**/*"],
+  "exclude": [".git", "node_modules"]
+}

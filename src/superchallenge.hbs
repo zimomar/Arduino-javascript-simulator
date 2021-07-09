@@ -1,0 +1,46 @@
+{{!< base}}
+
+<h1 class="mt-4">Super Challenge!</h1>
+<p>
+  Now take your knowledge further. In the class challenge you used the feedback from the ultrasonic sensor to navigate through the environment and collect the coins. Most of the class solutions involved hardcoding some parts of the strategy though, especially when rotating from the top wall to the right wall.
+</p>
+
+<p>
+  In this super challenge, we have the same requirements with one change to the environment. There are 3 different environments with a small modification; the gap between the two walls has a different distance. 
+  For the class challenge the focus was on optimizing your strategy for time. In this super challenge the focus shifts to the principle of generalizablity. See if you can design an algorithm that generalizes.
+</p>
+
+
+<div class="alert alert-success" role="alert"
+  style="max-width: 600px; margin-left: auto; margin-right:auto; margin-top:50px;">
+  <h4 class="alert-heading">Instructions</h4>
+
+  <p>Design <strong>ONE</strong> algorithm only that can collect all the coins in all three environemnts.  </p>
+
+</div>
+<br><br>
+
+<div class="row" style="margin-bottom: 100px;">
+  <div class="col-md-6 app-container" style="height:600px;">
+    <p4-arduino-ide-container id="ultrasonic-workshop-ide-container">
+      <div class="code-editor" id="ultrasonic-workshop-monaco"></div>
+      <div class="compiler-output">
+        <pre class="compiler-output-text" id="ultrasonic-compiler-output-text"></pre>
+        <pre class="compiler-output-text" id="ultrasonic-serial-output-text"></pre>
+
+      </div>
+    </p4-arduino-ide-container>
+  </div>
+  <div class="col-md-6 text-center" style="min-width:500px; ">
+
+
+    <canvas class="robot-environment" style="max-height:600px; max-width:600px" id="ultrasonic-world"></canvas>
+<div class="row">
+      <div class="col-md-4 text-center"><button class="btn btn-primary" id="position1">Environment 1</button></div>
+      <div class="col-md-4 text-center"><button class="btn btn-primary" id="position2">Environment 2</button></div>
+      <div class="col-md-4 text-center"><button class="btn btn-primary" id="position3">Environment 3</button></div>
+    </div>
+  </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.js"></script>
+<script src="ts/superchallenge.ts"></script>

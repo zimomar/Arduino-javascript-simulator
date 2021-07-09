@@ -1,0 +1,55 @@
+{{!< base}}
+
+<h1 class="mt-4">Follow The Wall</h1>
+<p>Instead of moving the robot with hardcoded steps, we want to use feedback from the ultrasonic sensor to decide how to
+  move the robot. This can be done with the loop function. At every loop we get the distance of the top wall using the
+  ultrasonic sensor. And then we make a decision based on that distance on how to move the servos of the robot. For
+  example, a starting strategy would be: if the distance is greater than 110 then move left. If less than 110 move
+  right.</p>
+<div class="alert alert-success" role="alert"
+  style="max-width: 600px; margin-left: auto; margin-right:auto; margin-top:50px;">
+  <h4 class="alert-heading">Exercise</h4>
+  <p>The coins are around 110 cm away from the top wall. Use the data from the ultrasonic sensor to navigate the robot
+    to collect both coins.</p>
+  <div class="text-center">
+
+    <p>
+      <a class="btn btn-primary " style="width: 200px; font-size: 30px;   line-height: 40px;
+    " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+        aria-controls="collapseExample">
+        HINT
+      </a>
+    </p>
+    <div class="collapse" id="collapseExample" style="max-width: 600px; margin-left:auto; margin-right:auto;">
+      <div class="card card-body">
+        If you just rotate the robot left and right, you will not be getting closer or farther away from the wall. You
+        will just be changing the direction of where the robot is pointing to.
+        If you want to get closer to the wall, a good strategy to start with is:
+        <br><br><code> Rotate the robot to the left<br>Move the robot forward for few milliseconds<br>Rotate the robot back to the right</code><br>
+        After this, the robot will be moved closer to the wall while staying parallel with the wall.
+      </div>
+    </div>
+  </div>
+</div>
+<br><br>
+
+<div class="row" style="margin-bottom: 100px;">
+  <div class="col-md-6 app-container" style="height:600px;">
+    <p4-arduino-ide-container id="ultrasonic-workshop-ide-container">
+      <div class="code-editor" id="ultrasonic-workshop-monaco"></div>
+      <div class="compiler-output">
+        <pre class="compiler-output-text" id="ultrasonic-compiler-output-text"></pre>
+        <pre class="compiler-output-text" id="ultrasonic-serial-output-text"></pre>
+
+      </div>
+    </p4-arduino-ide-container>
+  </div>
+  <div class="col-md-6 text-center" style="min-width:500px; ">
+
+
+    <canvas class="robot-environment" style="max-height:600px; max-width:600px" id="ultrasonic-world"></canvas>
+
+  </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.js"></script>
+<script src="ts/followwall.ts"></script>
