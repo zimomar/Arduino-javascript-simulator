@@ -3,12 +3,16 @@ import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
+import { LEDElement } from "@wokwi/elements";
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
 const unoBoard = new ArduinoUno();
+
+const led = new LEDElement();
+
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
