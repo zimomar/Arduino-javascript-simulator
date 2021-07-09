@@ -4,6 +4,7 @@ import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
 import { LEDElement } from "@wokwi/elements";
+import { PushbuttonElement } from "@wokwi/elements";
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
@@ -12,6 +13,9 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
 const unoBoard = new ArduinoUno();
 
 const led = new LEDElement();
+//led.setAttribute.bind()
+
+const pushButton = new PushbuttonElement();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 

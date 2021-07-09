@@ -115,35 +115,23 @@ void loop() {
   <div class="col">
     <div class="">
       <wokwi-arduino-uno id="setup-workshop-wokwi-arduino"></wokwi-arduino-uno>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert"
-        style="margin-top:50px;border-color:#1d4059;  background-color: white; color: #1d4059 ; max-width: 500px; margin-left:auto;margin-right:auto;">
-        <strong>NOTE</strong> that at the end of each statement in <strong>C++</strong> we
-        need to add <strong>;</strong> to end the statement. Remove one of the semicolons and try to run the
-        program. The
-        Arduino compiler will tell you that you are missing a semicolon.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
     </div>
   </div>
-  <div class="col">
+
+    <div class="col">
     <div class="">
       <!-- ajouter LED ici-->
+      <wokwi-led></wokwi-led>
+    </div>
+  <div class="col">
+    <div class="" margin-top="10em">
+      <!-- ajouter PushButton ici-->
+      <wokwi-pushbutton></wokwi-pushbutton>
     </div>
   </div>
 </div>
-</div>
 
 
-<div class="alert alert-success" role="alert"
-  style="max-width: 600px; margin-left: auto; margin-right:auto; margin-top:50px;">
-  <h4 class="alert-heading">Exercise</h4>
-  <p>The above program turned on the built in LED and waited for 3 seconds and then did nothing. Can you turn the LED
-    off
-    after the 3 seconds?</p>
-
-</div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.js"></script>
 
 <script src="ts/index.ts"></script>
