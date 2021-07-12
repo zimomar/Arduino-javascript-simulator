@@ -13,6 +13,9 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
 const unoBoard = new ArduinoUno();
 
 const led = new LEDElement();
+
+//ajouter instance LCD
+
 //led.setAttribute.bind()
 
 const pushButton = new PushbuttonElement();
@@ -63,7 +66,7 @@ void loop() {
 
 const compilerOutputText = document.querySelector("#compiler-output-text");
 const serialOutputText = document.querySelector("#serial-output-text");
-
+const led = document.querySelector("#wokwi-led");
 const arduinoContainer = document.querySelector<ArduinoIDEContainer>(
   "#setup-workshop-ide-container"
 );
