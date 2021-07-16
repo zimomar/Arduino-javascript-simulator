@@ -10,7 +10,10 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
+
 const unoBoard = new ArduinoUno();
+//unoBoard.addConnection(led.)
+
 
 const led = new LEDElement();
 
@@ -66,7 +69,7 @@ void loop() {
 
 const compilerOutputText = document.querySelector("#compiler-output-text");
 const serialOutputText = document.querySelector("#serial-output-text");
-const led = document.querySelector("#wokwi-led");
+//const led = document.querySelector("#wokwi-led");
 const arduinoContainer = document.querySelector<ArduinoIDEContainer>(
   "#setup-workshop-ide-container"
 );

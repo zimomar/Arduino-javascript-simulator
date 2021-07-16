@@ -121,12 +121,16 @@ void loop() {
     <div class="col">
     <div class="">
       <!-- ajouter LED ici-->
-      <wokwi-led></wokwi-led>
+      <wokwi-led
+          color="red"
+          .value=${boolean('value', true)}
+          .brightness=${number('brightness', 1.0, brightnessOptions)}
+        ></wokwi-led>
     </div>
   <div class="col">
     <div class="" margin-top="10em">
       <!-- ajouter PushButton ici-->
-      <wokwi-pushbutton></wokwi-pushbutton>
+      <wokwi-pushbutton id=""></wokwi-pushbutton>
     </div>
   </div>
   <div class="col">
