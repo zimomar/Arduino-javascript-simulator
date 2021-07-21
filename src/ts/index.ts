@@ -10,20 +10,17 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
-
 const unoBoard = new ArduinoUno();
-//unoBoard.addConnection(led.)
-
 
 const led = new LEDElement();
 
-//ajouter instance LCD
-
-//led.setAttribute.bind()
+led.label="led1";
 
 const pushButton = new PushbuttonElement();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
+
+//unoBoard.addConnection(2,led);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";
