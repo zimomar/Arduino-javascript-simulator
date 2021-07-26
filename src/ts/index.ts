@@ -3,6 +3,7 @@ import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
+import { Servo } from "@p4labs/hardware";
 import { LEDElement } from "@wokwi/elements";
 import { PushbuttonElement } from "@wokwi/elements";
 
@@ -12,13 +13,17 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
 
 const unoBoard = new ArduinoUno();
 
-const led = new LEDElement();
+const servo = new Servo(4, "s1");
 
-LEDElement = document.querySelector("#led-element");
+unoBoard.addConnection(4, servo);
 
-led.label = "led1";
+//const led = new LEDElement();
 
-const pushButton = new PushbuttonElement();
+//LEDElement = document.querySelector("#led-element");
+
+//led.label = "led1";
+
+//const pushButton = new PushbuttonElement();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
