@@ -14,13 +14,15 @@ const unoBoard = new ArduinoUno();
 
 const led = new LEDElement();
 
-led.label="led1";
+LEDElement = document.querySelector("#led-element");
+
+led.label = "led1";
 
 const pushButton = new PushbuttonElement();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
-//unoBoard.addConnection(2,led);
+unoBoard.addConnection(2,led);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";

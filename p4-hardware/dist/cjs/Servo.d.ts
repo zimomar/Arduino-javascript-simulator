@@ -1,3 +1,4 @@
+import { LEDElement } from "@wokwi/elements";
 import { Component } from "./Component";
 export declare class Servo extends Component {
     widthOfLastPulse: number;
