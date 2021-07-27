@@ -2,32 +2,17 @@ import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";
-import { ArduinoUno } from "@p4labs/hardware";
-import { Servo } from "@p4labs/hardware";
-import { LEDElement } from "@wokwi/elements";
-import { PushbuttonElement } from "@wokwi/elements";
+import { ArduinoUno, Servo } from "@p4labs/hardware";
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
 const unoBoard = new ArduinoUno();
-
-const servo = new Servo(4, "s1");
-
-unoBoard.addConnection(4, servo);
-
-//const led = new LEDElement();
-
-//LEDElement = document.querySelector("#led-element");
-
-//led.label = "led1";
-
-//const pushButton = new PushbuttonElement();
-
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
-unoBoard.addConnection(2,led);
+const servo = new Servo(4, "S1");
+unoBoard.addConnection(4, servo);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";
@@ -45,24 +30,20 @@ window.require(["vs/editor/editor.main"], () => {
   // initialize digital pin 
   //LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
-
   // turn the LED on (HIGH is the voltage level)
   digitalWrite(LED_BUILTIN, HIGH);  
   // wait for 3 second 
   delay(3000);    
-
   /*
     TASK: can you turn off the built in LED
     after waiting for 3 seconds?
   */
-
 }
 //loop function is empty and is 
 //doing nothing after the setup
 void loop() {
 }
  
-
 `,
       language: "cpp",
       minimap: { enabled: false },
@@ -73,7 +54,7 @@ void loop() {
 
 const compilerOutputText = document.querySelector("#compiler-output-text");
 const serialOutputText = document.querySelector("#serial-output-text");
-//const led = document.querySelector("#wokwi-led");
+
 const arduinoContainer = document.querySelector<ArduinoIDEContainer>(
   "#setup-workshop-ide-container"
 );
