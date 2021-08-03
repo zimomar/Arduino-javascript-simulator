@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Component } from "../Component";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";

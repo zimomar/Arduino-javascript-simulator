@@ -1,18 +1,47 @@
 import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
-import { ArduinoUnoElement } from "@wokwi/elements";
+import { ArduinoUnoElement, LEDElement } from "@wokwi/elements";
 import { ArduinoUno, Servo } from "@p4labs/hardware";
+import { Component } from "@p4labs/hardware/dist/esm/Component";
+
+class LEDComponent extends Component {
+  unoElement: ArduinoUnoElement;
+  ledElement: LEDElement;
+  constructor(
+    pin: number,
+    label: string,
+    ledElement: LEDElement,
+    unoElement: ArduinoUnoElement
+  ) {
+    super(pin, label);
+    this.unoElement = unoElement;
+    this.ledElement = ledElement;
+  }
+  update(pinState: boolean) {
+    this.ledElement.value = pinState;
+  }
+  reset() {
+    this.ledElement.value = false;
+  }
+}
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
+const ledElement: LEDElement = document.querySelector("#led1");
+
+const ledComponent = new LEDComponent(6, "led1", ledElement, arduinoElement);
+
 const unoBoard = new ArduinoUno();
+
+//ledComponent.update(true);
+ledComponent.reset();
+
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
-const servo = new Servo(4, "S1");
-unoBoard.addConnection(4, servo);
+unoBoard.addConnection(6, ledComponent);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";
