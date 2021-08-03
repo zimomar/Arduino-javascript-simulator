@@ -37,7 +37,7 @@ const ledComponent = new LEDComponent(6, "led1", ledElement, arduinoElement);
 const unoBoard = new ArduinoUno();
 
 //ledComponent.update(true);
-ledComponent.reset();
+//ledComponent.reset();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
@@ -55,24 +55,19 @@ window.require(["vs/editor/editor.main"], () => {
   editor = monaco.editor.create(
     document.querySelector("#setup-workshop-monaco"),
     {
-      value: `void setup() {
-  // initialize digital pin 
-  //LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);  
-  // wait for 3 second 
-  delay(3000);    
-  /*
-    TASK: can you turn off the built in LED
-    after waiting for 3 seconds?
-  */
-}
-//loop function is empty and is 
-//doing nothing after the setup
-void loop() {
-}
- 
+      value: `//setup global variables here
+      int led = 6; // Choose the led pin. You can use any other pins in your board.
+      // the setup function runs only one time in the startup of your board.
+      void setup() {
+        pinMode(led, OUTPUT);// initialize digital pin led as an output.
+      }
+      // the loop function runs over and over again forever
+      void loop() {
+        digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+        delay(1000);                       // wait for a second (1000 milliseconds)
+        digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
+        delay(1000);                       // wait for a second
+      }
 `,
       language: "cpp",
       minimap: { enabled: false },
