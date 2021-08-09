@@ -6,16 +6,9 @@ import { ArduinoUno, Servo } from "@p4labs/hardware";
 import { Component } from "@p4labs/hardware/dist/esm/Component";
 
 class LEDComponent extends Component {
-  unoElement: ArduinoUnoElement;
   ledElement: LEDElement;
-  constructor(
-    pin: number,
-    label: string,
-    ledElement: LEDElement,
-    unoElement: ArduinoUnoElement
-  ) {
+  constructor(pin: number, label: string, ledElement: LEDElement) {
     super(pin, label);
-    this.unoElement = unoElement;
     this.ledElement = ledElement;
   }
   update(pinState: boolean) {
@@ -32,7 +25,7 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
 
 const ledElement: LEDElement = document.querySelector("#led1");
 
-const ledComponent = new LEDComponent(6, "led1", ledElement, arduinoElement);
+const ledComponent = new LEDComponent(6, "led1", ledElement);
 
 const unoBoard = new ArduinoUno();
 
