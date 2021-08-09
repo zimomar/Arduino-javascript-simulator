@@ -1,4 +1,3 @@
-import { Robots } from "@p4labs/environments";
 import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";

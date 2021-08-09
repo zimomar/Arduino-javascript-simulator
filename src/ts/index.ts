@@ -2,7 +2,7 @@ import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement, LEDElement } from "@wokwi/elements";
-import { ArduinoUno, Servo } from "@p4labs/hardware";
+import { ArduinoUno } from "@p4labs/hardware";
 import { Component } from "@p4labs/hardware/dist/esm/Component";
 
 class LEDComponent extends Component {
