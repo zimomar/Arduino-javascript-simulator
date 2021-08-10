@@ -1,15 +1,44 @@
-import { Robots } from "@p4labs/environments";
 import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
-import $ from "jquery";
+import { ArduinoUnoElement, LEDElement } from "@wokwi/elements";
+import { ArduinoUno } from "@p4labs/hardware";
+import { Component } from "@p4labs/hardware/dist/esm/Component";
+
+class LEDComponent extends Component {
+  ledElement: LEDElement;
+  constructor(pin: number, label: string, ledElement: LEDElement) {
+    super(pin, label);
+    this.ledElement = ledElement;
+  }
+  update(pinState: boolean) {
+    this.ledElement.value = pinState;
+  }
+  reset() {
+    this.ledElement.value = false;
+  }
+}
+
+const arduinoElement: ArduinoUnoElement = document.querySelector(
+  "#setup-workshop-wokwi-arduino"
+);
+
+const ledElement: LEDElement = document.querySelector("#led2");
+
+const ledComponent = new LEDComponent(6, "led2", ledElement);
+
+const unoBoard = new ArduinoUno();
+
+//ledComponent.update(true);
+//ledComponent.ledElement.brightness = 2;
+
+if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
+
+unoBoard.addConnection(6, ledComponent);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";
 
-// Load Editor
-declare const window: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-declare const monaco: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 window.require.config({
   paths: {
     vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs",
@@ -17,51 +46,23 @@ window.require.config({
 });
 window.require(["vs/editor/editor.main"], () => {
   editor = monaco.editor.create(
-    document.querySelector("#ultrasonic-workshop-monaco"),
+    document.querySelector("#setup-workshop-monaco"),
     {
-      value: `#include <Servo.h>
-
-Servo leftservo;  
-Servo rightservo;  
-const int pingPin = 5; // Trigger Pin of Ultrasonic Sensor
-const int echoPin = 6; // Echo Pin of Ultrasonic Sensor
-
-void setup() {
-  leftservo.attach(9);  
-  rightservo.attach(10);
-  
-   //set up the Serial
-  Serial.begin(9600);
-  //setupt the pin modes  
-  pinMode(pingPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-
-  leftservo.write(90);
-  rightservo.write(90);
-
-}
-
-void loop() {
-
-  long duration;  
-  //clear the ping pin
-  digitalWrite(pingPin, LOW);
-  delayMicroseconds(2);
-  //send the 10 microsecond trigger
-  digitalWrite(pingPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPin, LOW);
-  //get the pulse duration in microseconds
-  duration = pulseIn(echoPin, HIGH);
-
-  /*
-    TASK: The coins are around 110 cm away from the top wall.
-    Use the ultrasonic sensor data to navigate the robot in order
-    to collect the coins.
-  */
-
-  delay(50);  
-}
+      value: `int led = 6;           // the PWM pin the LED is attached to
+      int brightness = 0;    // inital brightness of the LED
+      int fadeAmount = 0.02;    // how many points to fade the LED by
+      
+      void setup() { // the setup routine runs once
+        pinMode(led, OUTPUT); // declare pin 6 to be an output:
+      }
+      
+      void loop() { // the loop routine runs over and over again forever:
+        digitalWrite(led, brightness); // set the brightness of pin 6:
+        brightness += fadeAmount; // change the brightness for next time
+        // reverse the direction of the fading at the ends of the fade:
+        if (brightness <= 0 || brightness >= 1) fadeAmount = -fadeAmount;
+        delay(30);  // wait for 30 milliseconds to see the dimming effect
+      }
 `,
       language: "cpp",
       minimap: { enabled: false },
@@ -70,47 +71,15 @@ void loop() {
   );
 });
 
-const compilerOutputText = document.querySelector(
-  "#ultrasonic-compiler-output-text"
-);
-const serialOutputText = document.querySelector(
-  "#ultrasonic-serial-output-text"
-);
+const compilerOutputText = document.querySelector("#compiler-output-text");
+const serialOutputText = document.querySelector("#serial-output-text");
 
 const arduinoContainer = document.querySelector<ArduinoIDEContainer>(
-  "#ultrasonic-workshop-ide-container"
+  "#setup-workshop-ide-container"
 );
 
-//set up robot environment
-const canvas = document.getElementById("ultrasonic-world");
-
-let robot = new Robots.Arduino.TwoServoRobot(
-  canvas,
-  serialOutputText,
-  arduinoContainer,
-  "imgs/room-background.jpg"
-);
-
-robot.environment.addObstacleRectangle(800, 400, 30, 800);
-robot.environment.addObstacleRectangle(150, 0, 800, 30);
-
-//robot.environment.addObstacleRectangle(400, 120, 600, 10);
-
-//robot.environment.addObstacleRectangle(400, 100, 300, 100, "#3CAEA3");
-robot.environment.addCoin(200, 120);
-robot.environment.addCoin(300, 120);
-robot.environment.addCoin(400, 120);
-robot.environment.addCoin(500, 120);
-
-robot.environment.addCoin(700, 200);
-robot.environment.addCoin(700, 300);
-robot.environment.addCoin(700, 400);
-robot.environment.addCoin(700, 500);
-
-const position = robot.environment.robotInitialPosition;
-robot.environment.robotInitialPosition = { x: position.x, y: position.y + 70 };
-robot.environment.reset();
-robot.environment.tick(10);
+unoBoard.setSerialOutputElement(serialOutputText);
+unoBoard.setTimeLabelElement(arduinoContainer);
 
 async function compileAndRun() {
   if (serialOutputText) serialOutputText.textContent = "";
@@ -122,12 +91,7 @@ async function compileAndRun() {
         if (compilerOutputText) compilerOutputText.textContent = "";
 
         simulationStatus = "on";
-        /* roboty = 200; //Math.floor(Math.random() * (250 - 170 + 1) + 170);
-        robot.environment.robotInitialPosition = { x: 100, y: roboty };
-        //robot.environment.addCoin()
-        console.log(robot.environment.robot.position);
-        robot.environment.reset(); */
-        robot.run(result.hex);
+        unoBoard.executeProgram(result.hex);
       } else {
         simulationStatus = "off";
         if (arduinoContainer) arduinoContainer.status = "off";
@@ -143,7 +107,7 @@ async function compileAndRun() {
 }
 
 function stopCode() {
-  robot.stop();
+  unoBoard.stopExecute();
 }
 
 function handleIDEStatusChange(e: CustomEvent) {
@@ -155,136 +119,6 @@ function handleIDEStatusChange(e: CustomEvent) {
   }
   simulationStatus = status;
 }
-
 arduinoContainer?.addEventListener("_status-change", (e: CustomEvent) =>
   handleIDEStatusChange(e)
 );
-
-//set up the buttons
-const btnPositin1 = document.querySelector("#position1");
-btnPositin1.addEventListener("click", () => {
-  robot.stop();
-  robot = new Robots.Arduino.TwoServoRobot(
-    canvas,
-    serialOutputText,
-    arduinoContainer,
-    "imgs/room-background.jpg"
-  );
-
-  robot.environment.addObstacleRectangle(800, 400, 30, 800);
-  robot.environment.addObstacleRectangle(150, 0, 800, 30);
-
-  //robot.environment.addObstacleRectangle(400, 120, 600, 10);
-
-  //robot.environment.addObstacleRectangle(400, 100, 300, 100, "#3CAEA3");
-  robot.environment.addCoin(200, 120);
-  robot.environment.addCoin(300, 120);
-  robot.environment.addCoin(400, 120);
-  robot.environment.addCoin(500, 120);
-
-  robot.environment.addCoin(700, 200);
-  robot.environment.addCoin(700, 300);
-  robot.environment.addCoin(700, 400);
-  robot.environment.addCoin(700, 500);
-
-  const position = robot.environment.robotInitialPosition;
-  robot.environment.robotInitialPosition = {
-    x: position.x,
-    y: position.y + 70,
-  };
-  robot.environment.reset();
-  robot.environment.tick(10);
-  if (arduinoContainer) arduinoContainer.status = "off";
-
-});
-
-const btnPositin2 = document.querySelector("#position2");
-btnPositin2.addEventListener("click", () => {
-  robot.stop();
-  robot = new Robots.Arduino.TwoServoRobot(
-    canvas,
-    serialOutputText,
-    arduinoContainer,
-    "imgs/room-background.jpg"
-  );
-
-  robot.environment.addObstacleRectangle(800, 400, 30, 800);
-  robot.environment.addObstacleRectangle(200, 0, 800, 30);
-
-  //robot.environment.addObstacleRectangle(400, 120, 600, 10);
-
-  //robot.environment.addObstacleRectangle(400, 100, 300, 100, "#3CAEA3");
-  robot.environment.addCoin(200, 120);
-  robot.environment.addCoin(300, 120);
-  robot.environment.addCoin(400, 120);
-  robot.environment.addCoin(500, 120);
-
-  robot.environment.addCoin(700, 200);
-  robot.environment.addCoin(700, 300);
-  robot.environment.addCoin(700, 400);
-  robot.environment.addCoin(700, 500);
-
-  const position = robot.environment.robotInitialPosition;
-  robot.environment.robotInitialPosition = {
-    x: position.x,
-    y: position.y + 70,
-  };
-  robot.environment.reset();
-  robot.environment.tick(10);
-  if (arduinoContainer) arduinoContainer.status = "off";
-
-});
-
-const btnPositin3 = document.querySelector("#position3");
-btnPositin3.addEventListener("click", () => {
-  robot.stop();
-  robot = new Robots.Arduino.TwoServoRobot(
-    canvas,
-    serialOutputText,
-    arduinoContainer,
-    "imgs/room-background.jpg"
-  );
-
-  robot.environment.addObstacleRectangle(800, 400, 30, 800);
-  robot.environment.addObstacleRectangle(50, 0, 800, 30);
-
-  //robot.environment.addObstacleRectangle(400, 120, 600, 10);
-
-  //robot.environment.addObstacleRectangle(400, 100, 300, 100, "#3CAEA3");
-  robot.environment.addCoin(200, 120);
-  robot.environment.addCoin(300, 120);
-  robot.environment.addCoin(400, 120);
-
-  robot.environment.addCoin(700, 200);
-  robot.environment.addCoin(700, 300);
-  robot.environment.addCoin(700, 400);
-  robot.environment.addCoin(700, 500);
-
-  const position = robot.environment.robotInitialPosition;
-  robot.environment.robotInitialPosition = {
-    x: position.x,
-    y: position.y + 70,
-  };
-  robot.environment.reset();
-  robot.environment.tick(10);
-  if (arduinoContainer) arduinoContainer.status = "off";
-
-});
-
-/* $(document).keypress(function (e) {
-  const key = e.which;
-  if (key == 97) {
-    robot.environment.setSpeeds(-16, 16);
-    robot.environment.applyForces();
-  }
-  else if (key == 100)
-  {
-    robot.environment.setSpeeds(16, -16);
-    robot.environment.applyForces();
-  }
-  else if (key == 119)
-  {
-    robot.environment.setSpeeds(16, 16);
-    robot.environment.applyForces();
-  }
-}); */
