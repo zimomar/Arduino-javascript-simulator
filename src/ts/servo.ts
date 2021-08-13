@@ -5,9 +5,9 @@ import { ArduinoUnoElement, PushbuttonElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
 import { Component } from "@p4labs/hardware/dist/esm/Component";
 
-class PushComponant extends Component {
+class PushComponent extends Component {
   pushElement: PushbuttonElement;
-  constructor (pin: number, label: string , pushElement: PushbuttonElement ){
+  constructor(pin: number, label: string, pushElement: PushbuttonElement) {
     super(pin, label);
     this.pushElement = pushElement;
   }
@@ -16,6 +16,20 @@ class PushComponant extends Component {
   }
   reset() {
     this.pushElement.pressed = false;
+  }
+
+  triggerListener(unoBoard: ArduinoUno) {
+    const button = document.querySelector<HTMLElement>("wokwi-pushbutton");
+    this.setupListener(button, unoBoard);
+  }
+
+  setupListener(button: Element, unoBoard: ArduinoUno) {
+    button.addEventListener("button-press", () => {
+      unoBoard.writeDigitalPin(this.pin, true);
+    });
+    button.addEventListener("button-release", () => {
+      unoBoard.writeDigitalPin(this.pin, false);
+    });
   }
 }
 
@@ -29,7 +43,7 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
 
 const pushbuttonElement: PushbuttonElement = document.querySelector("#button1");
 
-const pushCompo = new PushComponant(2, "button1", pushbuttonElement);
+const pushCompo = new PushComponent(2, "button1", pushbuttonElement);
 
 const unoBoard = new ArduinoUno();
 
@@ -40,6 +54,7 @@ if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
 //unoBoard.addConnection(6, ledComponent);
 unoBoard.addConnection(2, pushCompo);
+pushCompo.triggerListener(unoBoard);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";

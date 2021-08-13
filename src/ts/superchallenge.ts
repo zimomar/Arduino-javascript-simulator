@@ -30,7 +30,7 @@ const ledComponent = new LEDComponent(6, "led2", ledElement);
 const unoBoard = new ArduinoUno();
 
 //ledComponent.update(true);
-//ledComponent.ledElement.brightness = 2;
+//ledComponent.ledElement.brightness = ;
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
@@ -50,20 +50,21 @@ window.require(["vs/editor/editor.main"], () => {
     {
       value: `int led = 6;           // the PWM pin the LED is attached to
       int brightness = 0;    // inital brightness of the LED
-      int fadeAmount = 0.02;    // how many points to fade the LED by
+      int fadeAmount = 5;    // how many points to fade the LED by
       
       void setup() { // the setup routine runs once
         pinMode(led, OUTPUT); // declare pin 6 to be an output:
       }
       
       void loop() { // the loop routine runs over and over again forever:
-        digitalWrite(led, brightness); // set the brightness of pin 6:
+        analogWrite(led, brightness); // set the brightness of pin 6:
         brightness += fadeAmount; // change the brightness for next time
         // reverse the direction of the fading at the ends of the fade:
-        if (brightness <= 0 || brightness >= 1) fadeAmount = -fadeAmount;
+        if (brightness <= 0 || brightness >= 255) fadeAmount = -fadeAmount;
         delay(30);  // wait for 30 milliseconds to see the dimming effect
       }
-`,
+
+      `,
       language: "cpp",
       minimap: { enabled: false },
       automaticLayout: true,
@@ -122,3 +123,4 @@ function handleIDEStatusChange(e: CustomEvent) {
 arduinoContainer?.addEventListener("_status-change", (e: CustomEvent) =>
   handleIDEStatusChange(e)
 );
+
