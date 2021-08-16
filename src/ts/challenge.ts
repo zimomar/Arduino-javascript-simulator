@@ -117,3 +117,6 @@ function handleIDEStatusChange(e: CustomEvent) {
 arduinoContainer?.addEventListener("_status-change", (e: CustomEvent) =>
   handleIDEStatusChange(e)
 );
+arduinoContainer?.addEventListener("_status-change", (e: CustomEvent) =>
+  handleIDEStatusChange(e)
+);

@@ -23,6 +23,18 @@ class PotentiometerComponent extends Component {
   reset() {
     this.potentiometerElement.value = 0;
   }
+
+  triggerListener(unoBoard: ArduinoUno) {
+    const pot = document.querySelector<HTMLElement>("wokwi-potentiometer");
+    this.setupListener(pot, unoBoard);
+  }
+
+  setupListener(pot: Element, unoBoard: ArduinoUno) {
+    window.addEventListener('mouseup', e => {
+        unoBoard.writeDigitalPin(3,true);
+      }
+    });
+  }
 }
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
@@ -58,16 +70,16 @@ window.require(["vs/editor/editor.main"], () => {
   editor = monaco.editor.create(
     document.querySelector("#setup-workshop-monaco"),
     {
-      value: `int potentiometer = 5;    // select the input pin for the potentiometer
-      int BUILTIN_LED = 13;   // select the builtin LED
+      value: `int potentiometer = A3;    // select the input pin for the potentiometer
+      int led = BUILTIN_LED;   // select the builtin LED
       void setup() {
-       pinMode(BUILTIN_LED, OUTPUT);  // declare the led pin as an OUTPUT
+        pinMode(led, OUTPUT);  // declare the led pin as an OUTPUT
       }
       void loop() {
-        int val = digitalRead(potentiometer);    // read the value from the sensor
-        digitalWrite(BUILTIN_LED, HIGH);  // turn on the led
+        int val = analogRead(potentiometer);    // read the value from the sensor
+        digitalWrite(led, HIGH);  // turn on the led
         delay(val);                  // wait for the select time from potentiometer
-        digitalWrite(BUILTIN_LED, LOW);   // turn off the led
+        digitalWrite(led, LOW);   // turn off the led
         delay(val);                  // wait for the select time from potentiometer
       }
 
