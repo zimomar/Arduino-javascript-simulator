@@ -22,4 +22,5 @@ export declare class ArduinoUno {
   executeProgram(hex: string): void;
   stopExecute(): void;
   writeDigitalPin(pin: number, pinState: boolean): boolean;
+  writeAnalogPin(pin: number, value: number): void;
 }

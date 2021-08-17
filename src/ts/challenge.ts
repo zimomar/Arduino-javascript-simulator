@@ -27,7 +27,7 @@ const buzzerElement: BuzzerElement = document.querySelector("#buzzer1");
 
 const buzzerComponent = new BuzzerComponent(12, "buzzer1", buzzerElement);
 
-//buzzerComponent.reset();
+buzzerComponent.update(true);
 
 const unoBoard = new ArduinoUno();
 

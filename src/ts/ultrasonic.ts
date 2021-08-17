@@ -30,8 +30,8 @@ class PotentiometerComponent extends Component {
   }
 
   setupListener(pot: Element, unoBoard: ArduinoUno) {
-    window.addEventListener('mouseup', e => {
-        unoBoard.writeDigitalPin(3,true);
+    window.addEventListener("input", e => {
+        unoBoard.writeAnalogPin(this.pin, true);
       }
     });
   }

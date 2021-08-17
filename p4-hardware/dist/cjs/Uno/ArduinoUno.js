@@ -93,33 +93,43 @@ class ArduinoUno {
                 this.arduinoContainer.simulationTime = `${time}`;
         });
     }
-    stopExecute() {
-        var _a;
-        (_a = this.runner) === null || _a === void 0 ? void 0 : _a.stop();
-        this.runner = null;
+  stopExecute() {
+    var _a;
+    (_a = this.runner) === null || _a === void 0 ? void 0 : _a.stop();
+    this.runner = null;
+  }
+
+  writeAnalogPin(pin, value) {
+    let portConfig = avr8js_1.portCConfig.PIN;
+    if (value >= 0 && value <= 5) {
+      portConfig = avr8js_1.portCConfig.PIN;
+    } else {
+      return false;
     }
-    writeDigitalPin(pin, pinState) {
-        let portConfig = avr8js_1.portDConfig.PIN;
-        let pinIndex = 0;
-        if (pin > 0 && pin < 8) {
-            portConfig = avr8js_1.portDConfig.PIN;
-            pinIndex = pin;
-        }
-        else if (pin < 13) {
-            portConfig = avr8js_1.portBConfig.PIN;
-            pinIndex = pin - 8;
-        }
-        else
-            return false;
-        if (this.runner) {
-            if (!pinState)
-                this.runner.cpu.data[portConfig] &= ~(1 << pinIndex);
-            else
-                this.runner.cpu.data[portConfig] |= 1 << pinIndex;
-            return true;
-        }
-        return false;
+    if (this.runner) {
+      this.runner.cpu.data[portConfig] = (value << pinIndex);
     }
+  }
+
+  writeDigitalPin(pin, pinState) {
+    let portConfig = avr8js_1.portDConfig.PIN;
+    let pinIndex = 0;
+    if (pin > 0 && pin < 8) {
+      portConfig = avr8js_1.portDConfig.PIN;
+      pinIndex = pin;
+    } else if (pin < 13) {
+      portConfig = avr8js_1.portBConfig.PIN;
+      pinIndex = pin - 8;
+    } else return false;
+    if (this.runner) {
+      if (!pinState) 
+        this.runner.cpu.data[portConfig] &= ~(1 << pinIndex);
+      else 
+        this.runner.cpu.data[portConfig] |= (1 << pinIndex);
+      return true;
+    }
+    return false;
+  }
 }
 exports.ArduinoUno = ArduinoUno;
 class pin13 extends Component_1.Component {
