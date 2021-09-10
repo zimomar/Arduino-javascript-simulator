@@ -35,6 +35,12 @@ class PushComponent extends Component {
 }
 
 class LEDComponent extends Component {
+  update(pinState: boolean, cpuCycles: number): void {
+    throw new Error("Method not implemented.");
+  }
+  reset(): void {
+    throw new Error("Method not implemented.");
+  }
   ledElement: LEDElement;
   constructor(pin: number, label: string, ledElement: LEDElement) {
     super(pin, label);
