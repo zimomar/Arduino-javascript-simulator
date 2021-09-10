@@ -1,9 +1,10 @@
 import { buildHex } from "./compile";
 import "@p4labs/elements";
 import { ArduinoIDEContainer } from "@p4labs/elements";
-import { ArduinoUnoElement, PushbuttonElement } from "@wokwi/elements";
+import { ArduinoUnoElement, LEDElement, PushbuttonElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
 import { Component } from "@p4labs/hardware/dist/esm/Component";
+
 
 class PushComponent extends Component {
   pushElement: PushbuttonElement;
@@ -33,19 +34,31 @@ class PushComponent extends Component {
   }
 }
 
+class LEDComponent extends Component {
+  ledElement: LEDElement;
+  constructor(pin: number, label: string, ledElement: LEDElement) {
+    super(pin, label);
+    this.ledElement = ledElement;
+  }
+}
+
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
+
+const ledElement: LEDElement = document.querySelector("led1");
 
 const pushbuttonElement: PushbuttonElement = document.querySelector("#button1");
 
 const pushCompo = new PushComponent(2, "button1", pushbuttonElement);
 
+const ledComponent = new LEDComponent(6, "led1", ledElement);
+
 const unoBoard = new ArduinoUno();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
-//unoBoard.addConnection(6, ledComponent);
+unoBoard.addConnection(6, ledComponent);
 unoBoard.addConnection(2, pushCompo);
 pushCompo.triggerListener(unoBoard);
 
