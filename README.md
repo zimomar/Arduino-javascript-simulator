@@ -29,15 +29,20 @@ For adding a new element, you have to first create a new hbs (at /src) and a new
 ![](https://github.com/zimomar/Arduino-javascript-simulator/blob/main/src/imgs/servo_ts_hbs.JPG?raw=true)
 
 Then, you have to modify your .hbs file in order to include the wokwi-elements you want to use :
+
 ![](https://github.com/zimomar/Arduino-javascript-simulator/blob/main/src/imgs/servo_hbs.JPG?raw=true)
+
 Here we added wokwi-arduino-uno and wokwi-pushbutton.
 
 Then go to the .ts file and create your component Class : 
 
-PushComponent
+PushComponent class
+
 ![](https://github.com/zimomar/Arduino-javascript-simulator/blob/main/src/imgs/pushButtonComponent.JPG?raw=true)
 
-LEDComponent
+
+LEDComponent class
+
 ![](https://github.com/zimomar/Arduino-javascript-simulator/blob/main/src/imgs/ledComponent.JPG?raw=true)
 
 Here we added 2 listeners so the PushButton can recognize when its pressed or not (button-press, button-release). If its pressed, a "true" data will be sent to the button's pin, if its released , then a "false" data will be sent.
