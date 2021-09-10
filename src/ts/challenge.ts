@@ -7,15 +7,15 @@ import { Component } from "@p4labs/hardware/dist/esm/Component";
 
 class BuzzerComponent extends Component {
   buzzerElement: BuzzerElement;
-  constructor(pin: number, label: string, buzzerElement: BuzzerElement) {
+  constructor(pin: number, label: string, buzzerElement: BuzzerElement){
     super(pin, label);
     this.buzzerElement = buzzerElement;
   }
-  update(pinState: boolean) {
-    this.buzzerElement.hasSignal = pinState;
+  update(pinState: boolean): void {
+    console.log(this.buzzerElement.hasSignal);
   }
-  reset() {
-    this.buzzerElement.hasSignal = false;
+  reset(): void {
+    console.log(this.buzzerElement.hasSignal);
   }
 }
 
@@ -55,9 +55,7 @@ window.require(["vs/editor/editor.main"], () => {
       void setup() {}
       void loop() {
         tone(buzzer, 1000, 500); //play a tone with frequency of 1000hz for 500 ms 
-        delay(1000);
       }
-      
 `,
       language: "cpp",
       minimap: { enabled: false },

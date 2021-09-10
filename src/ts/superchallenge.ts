@@ -7,9 +7,11 @@ import { Component } from "@p4labs/hardware/dist/esm/Component";
 
 class LEDComponent extends Component {
   ledElement: LEDElement;
-  constructor(pin: number, label: string, ledElement: LEDElement) {
+  unoBoard: ArduinoUno;
+  constructor(pin: number, label: string, ledElement: LEDElement, unoBoard: ArduinoUno) {
     super(pin, label);
     this.ledElement = ledElement;
+    this.unoBoard = unoBoard;
   }
   update(pinState: boolean) {
     this.ledElement.value = pinState;
@@ -17,15 +19,52 @@ class LEDComponent extends Component {
   reset() {
     this.ledElement.value = false;
   }
+  setBrightness(value: number) {
+    this.ledElement.brightness = value;
+  }
+
+  triggerListener(unoBoard: ArduinoUno) {
+    const led = document.querySelector<HTMLElement>("wokwi-led");
+    this.setupListener(led, unoBoard);
+  }
+
+  setupListener(led: Element, unoBoard: ArduinoUno) {
+    led.addEventListener("value", () => {
+      if (lastState !== pin11State) {
+        const delta = runner.cpu.cycles - lastStateCycles;
+        if (lastState === PinState.High) {
+          ledHighCycles += delta;
+        }
+        lastState = pin11State;
+        lastStateCycles = runner.cpu.cycles;
+      }
+    });
+  }
+  let lastState =0;
+  let lastStateCycles = 0;
+  let lastUpdateCycles = 0;
+  let ledHighCycles = 0;
 }
 
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
-const ledElement: LEDElement = document.querySelector("#led2");
+const ledElement: LEDElement = document.querySelector("#led1");
 
-const ledComponent = new LEDComponent(6, "led2", ledElement);
+const ledComponent = new LEDComponent(6, "led1", ledElement);
+unoBoard.runner.portB.addListener((value) => {
+  
+  const pin11State = runner.portB.pinState(3);
+  if (lastState !== pin11State) {
+    const delta = runner.cpu.cycles - lastStateCycles;
+    if (lastState === PinState.High) {
+      ledHighCycles += delta;
+    }
+    lastState = pin11State;
+    lastStateCycles = runner.cpu.cycles;
+  }
+});
 
 const unoBoard = new ArduinoUno();
 

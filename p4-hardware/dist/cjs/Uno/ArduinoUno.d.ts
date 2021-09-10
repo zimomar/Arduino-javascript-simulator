@@ -2,6 +2,7 @@
 import { Component } from "../Component";
 import { ArduinoIDEContainer } from "@p4labs/elements";
 import { ArduinoUnoElement } from "@wokwi/elements";
+import { AVRRunner } from "./execute";
 export declare class ArduinoUno {
   private runner;
   private cpuEvents;
@@ -15,6 +16,7 @@ export declare class ArduinoUno {
   setTimeLabelElement(arduinoContainer: ArduinoIDEContainer): void;
   setUnoElement(arduinoUnoElement: ArduinoUnoElement): void;
   getSerialOutput(): string;
+  getRunner(): AVRRunner;
   addConnection(pin: number, component: Component): boolean;
   addCPUEvent(period: number, eventCall: any): void;
   addCPUEventMicrosecond(period: number, eventCall: any): void;

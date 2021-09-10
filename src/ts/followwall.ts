@@ -5,13 +5,17 @@ import { ArduinoUnoElement, LEDElement } from "@wokwi/elements";
 import { ArduinoUno } from "@p4labs/hardware";
 import { Component } from "@p4labs/hardware/dist/esm/Component";
 
-class LEDComponent extends Component {
+class RGBComponent extends Component {
   ledElement: LEDElement;
-  constructor(pin: number, label: string, ledElement: LEDElement) {
-    super(pin, label);
+  greenPin: number;
+  bluePin: number;
+  constructor(label: string, ledElement: LEDElement, redPin: number, greenPin: number, bluePin: number) {
+    super(redPin, label);
     this.ledElement = ledElement;
+    this.greenPin = greenPin;
+    this.bluePin = bluePin;
   }
-  update(pinState: boolean) {
+  update(pin: number, pinState: boolean) {
     this.ledElement.value = pinState;
   }
   reset() {

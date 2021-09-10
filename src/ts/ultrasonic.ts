@@ -30,9 +30,9 @@ class PotentiometerComponent extends Component {
   }
 
   setupListener(pot: Element, unoBoard: ArduinoUno) {
-    window.addEventListener("input", e => {
-        unoBoard.writeAnalogPin(this.pin, true);
-      }
+    pot.addEventListener("input", () => {
+      console.log(pot.nodeValue);
+      unoBoard.writeAnalogPin(this.pin, pot.nodeValue);
     });
   }
 }
@@ -57,6 +57,7 @@ const unoBoard = new ArduinoUno();
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
 unoBoard.addConnection(6, potentiometerComponent);
+potentiometerComponent.triggerListener(unoBoard);
 
 let editor: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 let simulationStatus = "off";
@@ -71,7 +72,7 @@ window.require(["vs/editor/editor.main"], () => {
     document.querySelector("#setup-workshop-monaco"),
     {
       value: `int potentiometer = A3;    // select the input pin for the potentiometer
-      int led = BUILTIN_LED;   // select the builtin LED
+      int led = 13;   // select the builtin LED
       void setup() {
         pinMode(led, OUTPUT);  // declare the led pin as an OUTPUT
       }
@@ -82,6 +83,8 @@ window.require(["vs/editor/editor.main"], () => {
         digitalWrite(led, LOW);   // turn off the led
         delay(val);                  // wait for the select time from potentiometer
       }
+
+
 
 `,
       language: "cpp",
