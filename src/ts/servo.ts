@@ -34,37 +34,18 @@ class PushComponent extends Component {
   }
 }
 
-class LEDComponent extends Component {
-  update(pinState: boolean, cpuCycles: number): void {
-    throw new Error("Method not implemented.");
-  }
-  reset(): void {
-    throw new Error("Method not implemented.");
-  }
-  ledElement: LEDElement;
-  constructor(pin: number, label: string, ledElement: LEDElement) {
-    super(pin, label);
-    this.ledElement = ledElement;
-  }
-}
-
 const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
-
-const ledElement: LEDElement = document.querySelector("led1");
 
 const pushbuttonElement: PushbuttonElement = document.querySelector("#button1");
 
 const pushCompo = new PushComponent(2, "button1", pushbuttonElement);
 
-const ledComponent = new LEDComponent(6, "led1", ledElement);
-
 const unoBoard = new ArduinoUno();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
-unoBoard.addConnection(6, ledComponent);
 unoBoard.addConnection(2, pushCompo);
 pushCompo.triggerListener(unoBoard);
 
