@@ -37,18 +37,11 @@ const arduinoElement: ArduinoUnoElement = document.querySelector(
   "#setup-workshop-wokwi-arduino"
 );
 
-//const ledElement: LEDElement = document.querySelector("#led1");
-
-//const ledComponent = new LEDComponent(6, "led1", ledElement);
-
 const pushbuttonElement: PushbuttonElement = document.querySelector("#button1");
 
 const pushCompo = new PushComponent(2, "button1", pushbuttonElement);
 
 const unoBoard = new ArduinoUno();
-
-//ledComponent.update(true);
-//ledComponent.reset();
 
 if (arduinoElement) unoBoard.setUnoElement(arduinoElement);
 
